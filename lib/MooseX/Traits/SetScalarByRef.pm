@@ -1,12 +1,12 @@
 package MooseX::Traits::SetScalarByRef;
 
-use 5.016003;
+use 5.010;
 use strict;
 use warnings;
 use Moose::Role;
 use Moose::Util::TypeConstraints qw(find_type_constraint);
 
-our $VERSION = '0.01';
+our $VERSION = '0.02';
 
 # Supply a default for "is"
 around _process_is_option => sub {
@@ -124,8 +124,31 @@ MooseX::Traits::SetScalarByRef - Wrap a ScalarRef attribute's accessors to re-us
 
 =head1 SYNOPSIS
 
+  package Local::Example;
+  use Moose;
+  use Moose::Util::TypeConstraints;
   use MooseX::Traits::SetScalarByRef;
-  blah blah blah
+  
+  subtype 'TkRef', as 'ScalarRef';
+  coerce 'TkRef', from 'Str', via { my $r = $_; return \$r };
+  
+  has _some_val => (
+    traits   => [ 'MooseX::Traits::SetScalarByRef' ],
+    isa      => 'TkRef',
+    init_arg => 'some_val',
+    default  => 'default value',
+    handles  => 1,
+  );
+  
+  package main;
+  
+  my $eg = Local::Example->new;
+  my $ref_addr = refaddr($eg->some_val);
+  $eg->some_val("new string");
+  my $refaddr_after_change = refaddr($eg->some_val);
+  if($ref_addr eq $refaddr_after_change) {
+    print "refaddr did not change";
+  }
 
 =head1 DESCRIPTION
 
@@ -139,21 +162,13 @@ you copy the string stored in the new scalar into the old scalar.
 None by default.
 
 
-
 =head1 SEE ALSO
 
-Mention other useful documentation such as the documentation of
-related modules or operating system documentation (such as man pages
-in UNIX), or any relevant external documentation such as RFCs or
-standards.
-
-If you have a mailing list set up for your module, mention it here.
-
-If you have a web site set up for your module, mention it here.
+L<Moose>, L<Moose::Util::TypeConstraints>
 
 =head1 AUTHORS
 
-A. U. Thor, E<lt>a.u.thor@a.galaxy.far.far.awayE<gt>
+Alex Becker, E<lt>c a p f a n a-t g m x do_t d eE<gt>
 
 =head1 CONTRIBUTORS
 

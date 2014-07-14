@@ -1,4 +1,4 @@
-use 5.016003;
+use 5.010;
 use ExtUtils::MakeMaker;
 # See lib/ExtUtils/MakeMaker.pm for details of how to influence
 # the contents of the Makefile that is written.
@@ -19,5 +19,5 @@ WriteMakefile(
     ABSTRACT_FROM  => 'lib/MooseX/Traits/SetScalarByRef.pm', # retrieve abstract from module
     AUTHOR         => 'Alex Becker <c a p f a n at g m x write_Adot-here d e>',
     LICENSE        => 'perl_5',
-    MIN_PERL_VERSION => 5.016003,
+    MIN_PERL_VERSION => 5.010,
 );

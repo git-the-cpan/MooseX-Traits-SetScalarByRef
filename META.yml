@@ -23,5 +23,5 @@ requires:
   Moose::Util::TypeConstraints: 2.0604
   Scalar::Util: 1.27
   Test::More: 0.98
-  perl: 5.016003
-version: 0.01
+  perl: 5.01
+version: 0.02
